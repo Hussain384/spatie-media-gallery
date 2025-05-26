@@ -51,17 +51,17 @@ class GalleryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'media_files.*' => 'required|file|mimes:jpeg,png,jpg,gif,svg,mp4,webm,ogg,avi,mov|max:1048576', // 1GB = 1048576 KB
         ]);
-    
+
         // Ensure the gallery exists
         $gallery = Gallery::firstOrCreate(['id' => 1]);
-    
-        foreach ($request->file('images', []) as $image) {
-            $gallery->addMedia($image)->toMediaCollection('default');
+
+        foreach ($request->file('media_files', []) as $file) {
+            $gallery->addMedia($file)->toMediaCollection('default');
         }
-    
-        return redirect()->route('gallery.index')->with('success', 'Images uploaded successfully.');
+
+        return redirect()->route('gallery.index')->with('success', 'Media uploaded successfully.');
     }
     
 
